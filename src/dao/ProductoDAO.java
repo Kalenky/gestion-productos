@@ -24,7 +24,7 @@ public class ProductoDAO {
         // Ejecuta sentencias  parametrizadas de MySQL
         PreparedStatement ps = conn.prepareStatement(sql);
         
-        // Metemos en los parámetros de la sentencia los datos del los getters del obj.
+        // Metemos en los parï¿½metros de la sentencia los datos del los getters del obj.
         ps.setString(1, p.getCodigo());
         ps.setString(2, p.getNombre());
         ps.setDouble(3, p.getPrecio());
@@ -33,7 +33,7 @@ public class ProductoDAO {
         ps.setDate(6, new Date(System.currentTimeMillis()));
         ps.setDate(7, new Date(System.currentTimeMillis()));
         
-        // Al hacerse cambios en la BD ejecutamos este método y si está OK, devuelve un entero
+        // Al hacerse cambios en la BD ejecutamos este mï¿½todo y si estï¿½ OK, devuelve un entero
         int resp = ps.executeUpdate();
         
         conn.close(); // Cerramos flujo
@@ -52,7 +52,7 @@ public class ProductoDAO {
         
         if (usuario.getRol().equals("admin")) { // En caso de que sea administrador
             // Conjunto Set que recoge la lista de los productos con todos sus campos
-            rs = st.executeQuery("SELECT * FROM productos"); // Como no hay parámetros meto aqui la consulta
+            rs = st.executeQuery("SELECT * FROM productos"); // Como no hay parï¿½metros meto aqui la consulta
         }else
             rs = st.executeQuery("SELECT * FROM productos WHERE usuario_id = " + usuario.getId()); 
             
@@ -68,7 +68,7 @@ public class ProductoDAO {
             p.setUsuarioId(rs.getInt("usuario_id"));
             p.setFechaCreacion(rs.getDate("fecha_creacion"));
             p.setFechaActualizacion(rs.getDate("fecha_actualizacion"));
-            lista.add(p); // para añadir todos los obj en una lista.
+            lista.add(p); // para aï¿½adir todos los obj en una lista.
         }
         conn.close(); // Cerramos flujo
 
@@ -83,14 +83,14 @@ public class ProductoDAO {
         String sql;
         
         if (usuario.getRol().equals("admin")) { // Si es admin sacamos todos los productos
-            sql = "SELECT * FROM productos WHERE codigo = ?"; // Saco los datos del objeto que busco por código
+            sql = "SELECT * FROM productos WHERE codigo = ?"; // Saco los datos del objeto que busco por cï¿½digo
         }else
             sql = "SELECT * FROM productos WHERE codigo = ? AND usuario_id = ?"; // Si es usuario sacamos solo los productos de su id.
         
         
-        PreparedStatement ps = conn.prepareStatement(sql); // Como hay parametros meto la consulta aquí mismo
+        PreparedStatement ps = conn.prepareStatement(sql); // Como hay parametros meto la consulta aquï¿½ mismo
 
-        ps.setString(1, codigo);  // 1º parametro: indica el signo de interrogacion a sust. El 2º es el valor por el cual se sust.
+        ps.setString(1, codigo);  // 1ï¿½ parametro: indica el signo de interrogacion a sust. El 2ï¿½ es el valor por el cual se sust.
         
         if (!usuario.getRol().equals("admin")) { // otra forma de hacerlo
             ps.setInt(2, usuario.getId());
@@ -99,7 +99,7 @@ public class ProductoDAO {
         ResultSet rs = ps.executeQuery(); // Conjunto que recoje el resultado.
 
         // Devuelve un boolean indicando si hay un proximo registro.
-        if(rs.next()) {  // Al ser único el resultado se pone un if en vez de bucle
+        if(rs.next()) {  // Al ser ï¿½nico el resultado se pone un if en vez de bucle
             p = new Producto(); // Guardo en el objeto el resultado de la busqueda
 
             p.setId(rs.getInt("id"));
@@ -123,7 +123,7 @@ public class ProductoDAO {
 
         Connection conn = Conexion.getConexion(); 
 
-        Statement st = conn.createStatement(); // Saco los datos del objeto que busco por código. Al no haber "?" no hay Prepared
+        Statement st = conn.createStatement(); // Saco los datos del objeto que busco por cï¿½digo. Al no haber "?" no hay Prepared
         ResultSet rs;
         
         if (usuario.getRol().equals("admin")) { // Si es admin
@@ -145,7 +145,7 @@ public class ProductoDAO {
             p.setFechaCreacion(rs.getDate("fecha_creacion"));
             p.setFechaActualizacion(rs.getDate("fecha_actualizacion"));
 
-            lista.add(p); // para añadir todos los obj en una lista.
+            lista.add(p); // para aï¿½adir todos los obj en una lista.
         }
         conn.close();
 
@@ -171,10 +171,10 @@ public class ProductoDAO {
         if (!usuario.getRol().equals("admin"))  // Si es admin
             sql += " AND usuario_id = " + usuario.getId(); // ???
         
-        PreparedStatement ps = conn.prepareStatement(sql); // Si hay parámetros meto la consulta aquí
+        PreparedStatement ps = conn.prepareStatement(sql); // Si hay parï¿½metros meto la consulta aquï¿½
 
         ps.setDate(1, new Date(System.currentTimeMillis()));
-        ps.setString(2, codigo); // Metemos en los parámetros de la sentencia los datos del los getters del obj.
+        ps.setString(2, codigo); // Metemos en los parï¿½metros de la sentencia los datos del los getters del obj.
         
         int resp = ps.executeUpdate(); // Al hacerse cambios en la BD siempre (executeUpdate)
 
@@ -191,7 +191,7 @@ public class ProductoDAO {
         if (usuario.getRol().equals("admin")) { // Borra en modo admin
             sql = "DELETE FROM productos WHERE id = ?"; // Setencia de borrado
         }else
-            sql = "DELETE FROM productos WHERE id = ? AND usuario id = " + usuario.getId(); // Setencia de borrado user
+            sql = "DELETE FROM productos WHERE id = ? AND usuario_id = " + usuario.getId(); // Setencia de borrado user
 
         PreparedStatement ps = conn.prepareStatement(sql);
 
