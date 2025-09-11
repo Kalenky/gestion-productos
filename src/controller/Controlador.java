@@ -48,8 +48,8 @@ public class Controlador implements ActionListener {
         contadorContrasena = 0; // ???
         contadorRespuesta = 0; // ???
 
-        vista.btnLogin.addActionListener(this); // Inicializo porque son los botones a escuchar de la 1ªventana (login)
-        vista.btnIrARegistro.addActionListener(this); // Inicializo porque son los botones a escuchar de la 1ªventana (login)
+        vista.btnLogin.addActionListener(this); // Inicializo porque son los botones a escuchar de la 1ï¿½ventana (login)
+        vista.btnIrARegistro.addActionListener(this); // Inicializo porque son los botones a escuchar de la 1ï¿½ventana (login)
     }
 
     public void iniciarVista() { // Visibilizamos vista
@@ -57,7 +57,7 @@ public class Controlador implements ActionListener {
     }
 
     public void limpiarCampos() { // Limpiamos campos
-        vista.txtUsuarioNombre.setText("");
+
         vista.txtNombre.setText("");
         vista.txtPrecio.setText("");
         vista.txtCantidad.setText("");
@@ -95,8 +95,8 @@ public class Controlador implements ActionListener {
                         contadorContrasena = 0;
                         contadorRespuesta = 0;
                         
-                        if (usuario.getHabilitado() == 1) { // Comprobamos si está habil
-                            usuario_logueado = usuario; // Para sacar la info si el usuario está logueado ?????
+                        if (usuario.getHabilitado() == 1) { // Comprobamos si estï¿½ habil
+                            usuario_logueado = usuario; // Para sacar la info si el usuario estï¿½ logueado ?????
 
                             vista.limpiarVista();		// limpia la vista de logueo
                             vista.vistaProductos();		// carga la vista de de productos---
@@ -207,7 +207,7 @@ public class Controlador implements ActionListener {
                         }
                     }else{
                         generarSonido(SONIDO_ERROR);
-                        JOptionPane.showMessageDialog(null, "Contrasenia Débil !!. (Debe tener 1 Mayusc, 1 num, 1 caracter especial. Num min de caracteres 8)");
+                        JOptionPane.showMessageDialog(null, "Contrasenia Dï¿½bil !!. (Debe tener 1 Mayusc, 1 num, 1 caracter especial. Num min de caracteres 8)");
                     }
                     
                 }catch (SQLException ex) {
@@ -231,7 +231,7 @@ public class Controlador implements ActionListener {
         // BOTON-AGREGAR
         }else if (e.getSource() == vista.btnAgregar) {
             
-            if (!vista.chkActualizarProducto.isSelected()) { // Si el check de actualizacion no está agregado
+            if (!vista.chkActualizarProducto.isSelected()) { // Si el check de actualizacion no estï¿½ agregado
                 
                 if (!vista.txtCodigo.getText().equals("") && !vista.txtNombre.getText().equals("") // Si no hay campos vacios
                         && !vista.txtPrecio.getText().equals("") && !vista.txtCantidad.getText().equals("")) {
@@ -272,7 +272,7 @@ public class Controlador implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Hay campos obligatorios que estan vacios.");
                 }
                 
-            // BOTÓN-ACTUALIZAR
+            // BOTï¿½N-ACTUALIZAR
             }else {
                 if (!vista.txtCodigo.getText().equals("")) {
                     try {
@@ -326,7 +326,7 @@ public class Controlador implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Hubo un problema: " + ex.getMessage());
             }
             
-        // BOTÓN - BUSCAR
+        // BOTï¿½N - BUSCAR
         }else if (e.getSource() == vista.btnBuscar) {
             
             if (!vista.txtBuscar.getText().equals("")) {
@@ -361,7 +361,7 @@ public class Controlador implements ActionListener {
                             DefaultTableModel modelo = (DefaultTableModel) vista.tabla.getModel();
                             modelo.setRowCount(0);
 
-                            for (Producto p : lista) { // Al ser lista añadimos las filas con bucle
+                            for (Producto p : lista) { // Al ser lista aï¿½adimos las filas con bucle
                                 Object[] fila = {p.getId(), p.getCodigo(), p.getNombre(), p.getPrecio(), p.getCantidad()};
                                 modelo.addRow(fila);
                             }
@@ -555,7 +555,7 @@ public class Controlador implements ActionListener {
                 }
             }else {
                 generarSonido(SONIDO_ERROR);
-                JOptionPane.showMessageDialog(null, "El campo de habilitar está vacio.");
+                JOptionPane.showMessageDialog(null, "El campo de habilitar estï¿½ vacio.");
             }
         
         // ELIMINAR
