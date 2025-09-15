@@ -2,7 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
+import java.sql.SQLException; 
 import java.util.ArrayList;   
 import java.util.InputMismatchException;
 
@@ -48,8 +48,8 @@ public class Controlador implements ActionListener {
         contadorContrasena = 0; // ???
         contadorRespuesta = 0; // ???
 
-        vista.btnLogin.addActionListener(this); // Inicializo porque son los botones a escuchar de la 1�ventana (login)
-        vista.btnIrARegistro.addActionListener(this); // Inicializo porque son los botones a escuchar de la 1�ventana (login)
+        vista.btnLogin.addActionListener(this); // Inicializo porque son los botones a escuchar de la 1?ventana (login)
+        vista.btnIrARegistro.addActionListener(this); // Inicializo porque son los botones a escuchar de la 1?ventana (login)
     }
 
     public void iniciarVista() { // Visibilizamos vista
@@ -68,12 +68,13 @@ public class Controlador implements ActionListener {
         vista.txtBuscar.setText("");
         vista.txtEliminar.setText("");
     }
+    
     public void generarSonido(String archivo) {
         try {
-                AudioInputStream audio = AudioSystem.getAudioInputStream(new File(archivo));
-                Clip clip = AudioSystem.getClip();
-                clip.open(audio);
-                clip.start();
+            AudioInputStream audio = AudioSystem.getAudioInputStream(new File(archivo));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audio);
+            clip.start();
         }catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error ejecutando sonido: " + e.getMessage());
         }
@@ -95,8 +96,8 @@ public class Controlador implements ActionListener {
                         contadorContrasena = 0;
                         contadorRespuesta = 0;
                         
-                        if (usuario.getHabilitado() == 1) { // Comprobamos si est� habil
-                            usuario_logueado = usuario; // Para sacar la info si el usuario est� logueado ?????
+                        if (usuario.getHabilitado() == 1) { // Comprobamos si esta habil
+                            usuario_logueado = usuario; // Para sacar la info si el usuario esta logueado ?????
 
                             vista.limpiarVista();		// limpia la vista de logueo
                             vista.vistaProductos();		// carga la vista de de productos---
@@ -118,6 +119,8 @@ public class Controlador implements ActionListener {
                                 vista.lblHora.setText("Hora: " + horaActual.format(formatoHora));
                             }else {
                                 vista.btnCrudUsuarios.setVisible(false);
+                                vista.lblFecha.setVisible(false);
+                                vista.lblHora.setVisible(false);
                             }
 
                             vista.btnAgregar.addActionListener(this); //se agrega el escuchador de los botones de la vista de productos
@@ -207,9 +210,8 @@ public class Controlador implements ActionListener {
                         }
                     }else{
                         generarSonido(SONIDO_ERROR);
-                        JOptionPane.showMessageDialog(null, "Contrasenia D�bil !!. (Debe tener 1 Mayusc, 1 num, 1 caracter especial. Num min de caracteres 8)");
+                        JOptionPane.showMessageDialog(null, "Contrasenia Debil !!. (Debe tener 1 Mayusc, 1 num, 1 caracter especial. Num min de caracteres 8)");
                     }
-                    
                 }catch (SQLException ex) {
                     generarSonido(SONIDO_ERROR);
                     JOptionPane.showMessageDialog(null, "Hubo un problema: " + ex.getMessage());
@@ -231,34 +233,74 @@ public class Controlador implements ActionListener {
         // BOTON-AGREGAR
         }else if (e.getSource() == vista.btnAgregar) {
             
-            if (!vista.chkActualizarProducto.isSelected()) { // Si el check de actualizacion no est� agregado
+            if (!vista.chkActualizarProducto.isSelected()) { // Si el check de actualizacion no esta agregado
                 
                 if (!vista.txtCodigo.getText().equals("") && !vista.txtNombre.getText().equals("") // Si no hay campos vacios
                         && !vista.txtPrecio.getText().equals("") && !vista.txtCantidad.getText().equals("")) {
                     try {
                         String codigo = vista.txtCodigo.getText(); // Rellenamos datos del producto
-                        String nombre = vista.txtNombre.getText();
+                        String regexCodigo = "^[A-Z]-\\d{4}$";
+                         String nombre = vista.txtNombre.getText();
+                        nombre = nombre.toLowerCase();
+                        String regexNombre = "^(?!\\d+$).+$";
+
                         Double precio = Double.parseDouble(vista.txtPrecio.getText());
                         int cantidad = Integer.parseInt(vista.txtCantidad.getText());
+                        
+                        if (codigo.matches(regexCodigo)) {
+                            listaProductos = (ArrayList<Producto>) productoDAO.listar(usuario_logueado);
+                            boolean repetido1 = false; // Compruebo que no se repita ningun nombre de producto
+                                for (Producto producto : listaProductos) {
+                                    if (producto.getCodigo().equals(codigo)) {
+                                        repetido1 = true;
+                                        break; // ya no hace falta seguir buscando
+                                    }
+                                }
+                                if(!repetido1){
+                                    if (nombre.matches(regexNombre)) { // Verifico que no entra ningun nombre solo con caracteres numericos
 
-                        if (precio > 0 && cantidad > 0) {
-                            Producto producto = new Producto(codigo, nombre, precio, cantidad, usuario_logueado.getId());
+                                    listaProductos = (ArrayList<Producto>) productoDAO.listar(usuario_logueado);
+                                    boolean repetido2 = false; // Compruebo que no se repita ningun nombre de producto
+                                        for (Producto producto : listaProductos) {
+                                            if (producto.getNombre().equals(nombre)) {
+                                                repetido2 = true;
+                                                break; // ya no hace falta seguir buscando
+                                            }
+                                        }
+                                        if (!repetido2) {
+                                            if (precio > 0 && cantidad > 0) {
+                                                Producto producto = new Producto(codigo, nombre, precio, cantidad, usuario_logueado.getId());
 
-                            int resp = productoDAO.guardar(producto); // Ejecutamos metodo guardar
+                                                int resp = productoDAO.guardar(producto); // Ejecutamos metodo guardar
 
-                            if (resp == 1) { // Verificacion
-                                generarSonido(SONIDO_CORRECTO);
-                                vista.lblMensaje.setText("PRODUCTO AGREGADO!");
-                                limpiarCampos();
-                            }else {
+                                                if (resp == 1) { // Verificacion
+                                                    generarSonido(SONIDO_CORRECTO);
+                                                    vista.lblMensaje.setText("PRODUCTO AGREGADO!");
+                                                    limpiarCampos();
+                                                }else {
+                                                    generarSonido(SONIDO_ERROR);
+                                                    JOptionPane.showMessageDialog(null, "No se pudo agregar el producto.");
+                                                }
+                                            }else {
+                                                generarSonido(SONIDO_ERROR);
+                                                JOptionPane.showMessageDialog(null, "Precio y cantidad deben ser mayores a cero.");
+                                            } 
+                                        }else {
+                                            generarSonido(SONIDO_ERROR);
+                                            JOptionPane.showMessageDialog(null, "Nombre del producto repetido !!. Por favor, inserta un nombre nuevo");
+                                        }    
+                                }else {
+                                     generarSonido(SONIDO_ERROR);
+                                    JOptionPane.showMessageDialog(null, "Nombre de producto incorrecto !!. Por favor, no insertes solo valores numericos"); 
+                                }
+                            }else{
                                 generarSonido(SONIDO_ERROR);
-                                JOptionPane.showMessageDialog(null, "No se pudo agregar el producto.");
+                                JOptionPane.showMessageDialog(null, "Nombre del codigo repetido !!. Por favor, inserta un nombre codigo");    
                             }
                         }else {
                             generarSonido(SONIDO_ERROR);
-                            JOptionPane.showMessageDialog(null, "Precio y cantidad deben ser mayores a cero.");
+                            JOptionPane.showMessageDialog(null, "Formato del codigo incorrecto !!. Inserta formato correcto. Ejemplo: A-0000");
                         }
-                        
                     }catch (SQLException ex) {
                         generarSonido(SONIDO_ERROR);
                         JOptionPane.showMessageDialog(null, "Hubo un problema: " + ex.getMessage());
@@ -272,13 +314,14 @@ public class Controlador implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Hay campos obligatorios que estan vacios.");
                 }
                 
-            // BOT�N-ACTUALIZAR
+            // BOTON-ACTUALIZAR
             }else {
                 if (!vista.txtCodigo.getText().equals("")) {
                     try {
                         String codigo = vista.txtCodigo.getText();
-                        
+                        codigo = codigo.toUpperCase();
                         String nombre = vista.txtNombre.getText();
+                        nombre = nombre.toLowerCase();
                         String precio = vista.txtPrecio.getText();
                         String cantidad = vista.txtCantidad.getText();
                         
@@ -326,14 +369,15 @@ public class Controlador implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Hubo un problema: " + ex.getMessage());
             }
             
-        // BOT�N - BUSCAR
+        // BOTON - BUSCAR
         }else if (e.getSource() == vista.btnBuscar) {
             
             if (!vista.txtBuscar.getText().equals("")) {
                 String datoBusqueda = vista.txtBuscar.getText();
-
-                if (vista.rbCodigo.isSelected()) { // BUSCAR POR CODIGO
+                // BUSCAR POR CODIGO
+                if (vista.rbCodigo.isSelected()) { 
                     try {
+                        datoBusqueda = datoBusqueda.toUpperCase();
                         Producto p = productoDAO.buscarPorCodigo(datoBusqueda, usuario_logueado); // Ejecuto metodo buscar y lo guardo en obj
 
                         if (p != null) { 
@@ -355,13 +399,14 @@ public class Controlador implements ActionListener {
                 // BUSCAR POR NOMBRE
                 }else {
                     try { // Ejecuto metodo y guardo la lista en ArrayList
+                        datoBusqueda = datoBusqueda.toLowerCase();
                         ArrayList<Producto> lista = (ArrayList<Producto>) productoDAO.buscarPorNombre(datoBusqueda, usuario_logueado);
 
                         if (lista.size() > 0) { // Si hay lista ejecutamos la logica anterior
                             DefaultTableModel modelo = (DefaultTableModel) vista.tabla.getModel();
                             modelo.setRowCount(0);
 
-                            for (Producto p : lista) { // Al ser lista a�adimos las filas con bucle
+                            for (Producto p : lista) { // Al ser lista a?adimos las filas con bucle
                                 Object[] fila = {p.getId(), p.getCodigo(), p.getNombre(), p.getPrecio(), p.getCantidad()};
                                 modelo.addRow(fila);
                             }
@@ -404,6 +449,7 @@ public class Controlador implements ActionListener {
                 }catch (SQLException ex) {
                     generarSonido(SONIDO_ERROR);
                     JOptionPane.showMessageDialog(null, "Hubo un problema: " + ex.getMessage());
+                    
                 }catch (InputMismatchException ex) {
                     generarSonido(SONIDO_ERROR);
                     JOptionPane.showMessageDialog(null, "Hubo un problema con el campo numerico: " + ex.getMessage());
@@ -467,10 +513,12 @@ public class Controlador implements ActionListener {
              
             if (!vista.txtUsuarioNombre.getText().equals("") && !vista.txtUsuarioContrasena.getText().equals("")
                     && !vista.txtRespuestaUsuarios.getText().equals("")) {// Si no hay campos vacios
+                
                 try {
                     String nombre = vista.txtUsuarioNombre.getText(); // Rellenamos datos del producto
                     String contrasena = vista.txtUsuarioContrasena.getText();
-                    String pregunta = (String) vista.cmbPreguntas.getSelectedItem();
+                    String pregunta = (String)vista.cmbPreguntas.getSelectedItem();
+                    
                     String respuesta = vista.txtRespuestaUsuarios.getText();
                     
                     String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
@@ -555,7 +603,7 @@ public class Controlador implements ActionListener {
                 }
             }else {
                 generarSonido(SONIDO_ERROR);
-                JOptionPane.showMessageDialog(null, "El campo de habilitar est� vacio.");
+                JOptionPane.showMessageDialog(null, "El campo de habilitar esta vacio.");
             }
         
         // ELIMINAR

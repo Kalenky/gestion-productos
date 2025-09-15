@@ -55,7 +55,6 @@ public class ProductoDAO {
             rs = st.executeQuery("SELECT * FROM productos"); // Como no hay par�metros meto aqui la consulta
         }else
             rs = st.executeQuery("SELECT * FROM productos WHERE usuario_id = " + usuario.getId()); 
-            
         
         while(rs.next()) { // Al haber varios productos se utiliza while para crear 1 obj
             Producto p = new Producto(); // y guardar todos sus campos
@@ -68,11 +67,11 @@ public class ProductoDAO {
             p.setUsuarioId(rs.getInt("usuario_id"));
             p.setFechaCreacion(rs.getDate("fecha_creacion"));
             p.setFechaActualizacion(rs.getDate("fecha_actualizacion"));
-            lista.add(p); // para a�adir todos los obj en una lista.
+            lista.add(p); // para aniadir todos los obj en una lista.
         }
         conn.close(); // Cerramos flujo
 
-        return lista; // Devuelvo la listo con todos los productos
+        return lista; // Devuelvo la lista con todos los productos
     }
 
     public Producto buscarPorCodigo(String codigo, Usuario usuario) throws SQLException { // EXTRAER DATO: SELECT (Consulta)
