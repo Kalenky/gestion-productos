@@ -189,7 +189,7 @@ public class Vista extends JFrame {
         contenedor.add(txtPasswordRegistro);
         
         // COMBO-BOX
-        String[] opciones = {"¿Cual es tu color favorito?", "¿Cual es tu ciudad favorita?", "¿Cual es tu animal favorito?"};
+        String[] opciones = {"ï¿½Cual es tu color favorito?", "ï¿½Cual es tu ciudad favorita?", "ï¿½Cual es tu animal favorito?"};
         cmbPreguntas = new JComboBox<>(opciones);
         cmbPreguntas.setBounds(420, 270, 200, 25);
         contenedor.add(cmbPreguntas);
@@ -319,11 +319,11 @@ public class Vista extends JFrame {
         txtEliminar.setBounds(130, 555, 200, 25);
         contenedor.add(txtEliminar);
 
-        btnEliminar = new JButton("Eliminar"); // Botón-Eliminar
+        btnEliminar = new JButton("Eliminar"); // Botï¿½n-Eliminar
         btnEliminar.setBounds(340, 555, 120, 25);
         contenedor.add(btnEliminar);
 
-        btnLogout = new JButton("Logout"); // Botón-Eliminar
+        btnLogout = new JButton("Logout"); // Botï¿½n-Eliminar
         btnLogout.setBounds(470, 555, 120, 25);
         contenedor.add(btnLogout);
 
@@ -378,7 +378,7 @@ public class Vista extends JFrame {
         txtUsuarioContrasena.setBounds(120, 40, 200, 25);
         contenedor.add(txtUsuarioContrasena);
 
-        String[] opciones = {"¿Cual es tu color favorito?", "¿Cual es tu ciudad favorita?", "¿Cual es tu animal favorito?"};
+        String[] opciones = {"ï¿½Cual es tu color favorito?", "ï¿½Cual es tu ciudad favorita?", "ï¿½Cual es tu animal favorito?"};
         cmbUsuariosPreguntas = new JComboBox<>(opciones);
         cmbUsuariosPreguntas.setBounds(120, 70, 200, 25);
         contenedor.add(cmbUsuariosPreguntas);
@@ -413,7 +413,7 @@ public class Vista extends JFrame {
         contenedor.add(lblUsuarioHabilitar);
         
         JLabel lblUsuarioEliminar = new JLabel("Eliminar ID: ");
-        lblUsuarioEliminar.setBounds(10, 525, 120, 25);
+        lblUsuarioEliminar.setBounds(10, 555, 120, 25);
         contenedor.add(lblUsuarioEliminar);
 
         txtUsuarioHabilitar = new JTextField();

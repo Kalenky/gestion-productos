@@ -469,7 +469,7 @@ public class Controlador implements ActionListener {
             vista.btnCrudProductos.addActionListener(this);
             vista.btnUsuarioMostrarTodos.addActionListener(this);
             vista.btnUsuarioHabilitar.addActionListener(this);
-            vista.btnEliminar.addActionListener(this);
+            vista.btnUsuarioEliminar.addActionListener(this);
             
             vista.contenedor.setBackground(Color.WHITE); // Fondo
 			
@@ -517,7 +517,7 @@ public class Controlador implements ActionListener {
                 try {
                     String nombre = vista.txtUsuarioNombre.getText(); // Rellenamos datos del producto
                     String contrasena = vista.txtUsuarioContrasena.getText();
-                    String pregunta = (String)vista.cmbPreguntas.getSelectedItem();
+                    String pregunta = (String)vista.cmbUsuariosPreguntas.getSelectedItem();
                     
                     String respuesta = vista.txtRespuestaUsuarios.getText();
                     
@@ -601,6 +601,10 @@ public class Controlador implements ActionListener {
                     generarSonido(SONIDO_ERROR);
                     JOptionPane.showMessageDialog(null, "Hubo un problema con el campo numerico: " + ex.getMessage());
                 }
+                catch (NumberFormatException ex) {
+                    generarSonido(SONIDO_ERROR);
+                    JOptionPane.showMessageDialog(null, "Hubo un problema con el campo numerico: " + ex.getMessage());
+                }
             }else {
                 generarSonido(SONIDO_ERROR);
                 JOptionPane.showMessageDialog(null, "El campo de habilitar esta vacio.");
@@ -633,6 +637,10 @@ public class Controlador implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Hubo un problema: " + ex.getMessage());
                     
                 }catch (InputMismatchException ex) {
+                    generarSonido(SONIDO_ERROR);
+                    JOptionPane.showMessageDialog(null, "Hubo un problema con el campo numerico: " + ex.getMessage());
+                }
+                catch (NumberFormatException ex) {
                     generarSonido(SONIDO_ERROR);
                     JOptionPane.showMessageDialog(null, "Hubo un problema con el campo numerico: " + ex.getMessage());
                 }

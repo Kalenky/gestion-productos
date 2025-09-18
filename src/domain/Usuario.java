@@ -1,6 +1,5 @@
 package domain;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Usuario {
@@ -81,11 +80,11 @@ public class Usuario {
     }
     
     public int getHabilitado() {
-        return id;
+        return habilitado;
     }
 
-    public void setHabilitado(int id) {
-        this.id = id;
+    public void setHabilitado(int habilitado) {
+        this.habilitado = habilitado;
     }
 
     
