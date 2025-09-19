@@ -205,8 +205,8 @@ public class UsuarioDAO {
         
         PreparedStatement ps = conn.prepareStatement(sql); // Si hay parámetros meto la consulta aquí
 
-        ps.setInt(1, id);
-        ps.setDate(2, new Date(System.currentTimeMillis()));
+        ps.setDate(1, new Date(System.currentTimeMillis()));
+        ps.setInt(2, id);
         
         int resp = ps.executeUpdate(); // Al hacerse cambios en la BD siempre (executeUpdate), 1 si es OK
         conn.close();

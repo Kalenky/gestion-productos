@@ -308,6 +308,9 @@ public class Controlador implements ActionListener {
                     }catch (InputMismatchException ex) {
                         generarSonido(SONIDO_ERROR);
                         JOptionPane.showMessageDialog(null, "Hubo un problema con los campos numericos: " + ex.getMessage());
+                    }catch (NumberFormatException ex) {
+                        generarSonido(SONIDO_ERROR);
+                        JOptionPane.showMessageDialog(null, "Hubo un problema con los campos numericos: " + ex.getMessage());
                     }
                 }else {
                     generarSonido(SONIDO_ERROR);
@@ -436,6 +439,7 @@ public class Controlador implements ActionListener {
                         int resp = productoDAO.eliminar(id, usuario_logueado); // Ejecutamos metodo eliminar
 
                         if (resp == 1) { // Verficiacion 
+                            generarSonido(SONIDO_CORRECTO);
                             vista.lblMensaje.setText("PRODUCTO ELIMINADO!");
                             limpiarCampos(); // Limpiamos
                         }else {
@@ -451,6 +455,9 @@ public class Controlador implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Hubo un problema: " + ex.getMessage());
                     
                 }catch (InputMismatchException ex) {
+                    generarSonido(SONIDO_ERROR);
+                    JOptionPane.showMessageDialog(null, "Hubo un problema con el campo numerico: " + ex.getMessage());
+                }catch (NumberFormatException ex) {
                     generarSonido(SONIDO_ERROR);
                     JOptionPane.showMessageDialog(null, "Hubo un problema con el campo numerico: " + ex.getMessage());
                 }
@@ -516,6 +523,8 @@ public class Controlador implements ActionListener {
                 
                 try {
                     String nombre = vista.txtUsuarioNombre.getText(); // Rellenamos datos del producto
+                    nombre = nombre.toLowerCase();
+                    String regexNombre = "^(?!\\d+$).+$";
                     String contrasena = vista.txtUsuarioContrasena.getText();
                     String pregunta = (String)vista.cmbUsuariosPreguntas.getSelectedItem();
                     
@@ -523,25 +532,31 @@ public class Controlador implements ActionListener {
                     
                     String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
                     
-                    if (contrasena.matches(regex)) {
+                    if (nombre.matches(regexNombre)) {
+                        if (contrasena.matches(regex)) {
                         Usuario usuario = new Usuario(nombre, contrasena, pregunta, respuesta, 1, "public");
 
                         int resp = usuarioDAO.guardar(usuario); // Ejecutamos metodo guardar
 
-                        if (resp == 1) { // Verificacion
-                            generarSonido(SONIDO_CORRECTO);
-                            vista.lblUsuarioMensaje.setText("USUARIO AGREGADO!");
-                            vista.txtUsuarioNombre.setText("");
-                            vista.txtUsuarioContrasena.setText("");
-                            vista.txtRespuestaUsuarios.setText("");
+                            if (resp == 1) { // Verificacion
+                                generarSonido(SONIDO_CORRECTO);
+                                vista.lblUsuarioMensaje.setText("USUARIO AGREGADO!");
+                                vista.txtUsuarioNombre.setText("");
+                                vista.txtUsuarioContrasena.setText("");
+                                vista.txtRespuestaUsuarios.setText("");
+                            }else {
+                                generarSonido(SONIDO_ERROR);
+                                JOptionPane.showMessageDialog(null, "No se pudo agregar el usuario.");
+                            }
                         }else {
                             generarSonido(SONIDO_ERROR);
-                            JOptionPane.showMessageDialog(null, "No se pudo agregar el usuario.");
+                            JOptionPane.showMessageDialog(null, "Contrasenia debil !!. (Debe tener 1 Mayusc, 1 num, 1 caracter especial. Num min de caracteres 8)");
                         }
-                    }else {
+                    }else{
                         generarSonido(SONIDO_ERROR);
-                        JOptionPane.showMessageDialog(null, "Contrasenia debil !!. (Debe tener 1 Mayusc, 1 num, 1 caracter especial. Num min de caracteres 8)");
+                        JOptionPane.showMessageDialog(null, "Nombre incorrecto !!. (El nombre debe tener letras y numeros)");
                     }
+                    
                 }catch (SQLException ex) {
                     generarSonido(SONIDO_ERROR);
                     JOptionPane.showMessageDialog(null, "Hubo un problema: " + ex.getMessage());

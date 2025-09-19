@@ -1220,3 +1220,15 @@ The connection was not closed by the application and is garbage collected [90018
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 46 more
+2025-09-19 16:50:32.049905+02:00 jdbc[7]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "DATE to BIGINT"
+Data conversion error converting "DATE to BIGINT"; SQL statement:
+UPDATE usuarios SET habilitado = 1, fecha_actualizacion = ? WHERE id = ? [22018-232]
+2025-09-19 16:51:42.482951+02:00 jdbc[8]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "DATE to BIGINT"
+Data conversion error converting "DATE to BIGINT"; SQL statement:
+UPDATE usuarios SET habilitado = 1, fecha_actualizacion = ? WHERE id = ? [22018-232]
+2025-09-19 16:53:54.173694+02:00 jdbc[17]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "DATE to BIGINT"
+Data conversion error converting "DATE to BIGINT"; SQL statement:
+UPDATE usuarios SET habilitado = 1, fecha_actualizacion = ? WHERE id = ? [22018-232]
