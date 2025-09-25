@@ -240,33 +240,35 @@ public class Controlador implements ActionListener {
                     try {
                         String codigo = vista.txtCodigo.getText(); // Rellenamos datos del producto
                         String regexCodigo = "^[A-Z]-\\d{4}$";
-                         String nombre = vista.txtNombre.getText();
+                        String nombre = vista.txtNombre.getText();
                         nombre = nombre.toLowerCase();
                         String regexNombre = "^(?!\\d+$).+$";
 
-                        Double precio = Double.parseDouble(vista.txtPrecio.getText());
-                        int cantidad = Integer.parseInt(vista.txtCantidad.getText());
-                        
-                        if (codigo.matches(regexCodigo)) {
-                            listaProductos = (ArrayList<Producto>) productoDAO.listar(usuario_logueado);
-                            boolean repetido1 = false; // Compruebo que no se repita ningun nombre de producto
-                                for (Producto producto : listaProductos) {
-                                    if (producto.getCodigo().equals(codigo)) {
-                                        repetido1 = true;
-                                        break; // ya no hace falta seguir buscando
+                        if (vista.txtCantidad.getText().length() <= 8 && vista.txtPrecio.getText().length() <= 8) { // Comprobacion longitud cantidad y precio a la vez (By Mariam)
+                            
+                            Double precio = Double.parseDouble(vista.txtPrecio.getText());
+                            int cantidad = Integer.parseInt(vista.txtCantidad.getText());
+                            
+                            if (codigo.matches(regexCodigo)) {
+                                listaProductos = (ArrayList<Producto>) productoDAO.listar(usuario_logueado);
+                                boolean repetido1 = false; // Compruebo que no se repita ningun nombre de codigoooo
+                                    for (Producto producto : listaProductos) {
+                                        if (producto.getCodigo().equals(codigo)) {
+                                            repetido1 = true;
+                                            break; // ya no hace falta seguir buscando
+                                        }
                                     }
-                                }
                                 if(!repetido1){
                                     if (nombre.matches(regexNombre)) { // Verifico que no entra ningun nombre solo con caracteres numericos
 
-                                    listaProductos = (ArrayList<Producto>) productoDAO.listar(usuario_logueado);
-                                    boolean repetido2 = false; // Compruebo que no se repita ningun nombre de producto
-                                        for (Producto producto : listaProductos) {
-                                            if (producto.getNombre().equals(nombre)) {
-                                                repetido2 = true;
-                                                break; // ya no hace falta seguir buscando
+                                        listaProductos = (ArrayList<Producto>) productoDAO.listar(usuario_logueado);
+                                        boolean repetido2 = false; // Compruebo que no se repita ningun nombre de productooooo
+                                            for (Producto producto : listaProductos) {
+                                                if (producto.getNombre().equals(nombre)) {
+                                                    repetido2 = true;
+                                                    break; // ya no hace falta seguir buscando
+                                                }
                                             }
-                                        }
                                         if (!repetido2) {
                                             if (precio > 0 && cantidad > 0) {
                                                 Producto producto = new Producto(codigo, nombre, precio, cantidad, usuario_logueado.getId());
@@ -289,18 +291,27 @@ public class Controlador implements ActionListener {
                                             generarSonido(SONIDO_ERROR);
                                             JOptionPane.showMessageDialog(null, "Nombre del producto repetido !!. Por favor, inserta un nombre nuevo");
                                         }    
-                                }else {
-                                     generarSonido(SONIDO_ERROR);
-                                    JOptionPane.showMessageDialog(null, "Nombre de producto incorrecto !!. Por favor, no insertes solo valores numericos"); 
+                                    }else {
+                                         generarSonido(SONIDO_ERROR);
+                                        JOptionPane.showMessageDialog(null, "Nombre de producto incorrecto !!. Por favor, no insertes solo valores numericos"); 
+                                    }
+                                }else{
+                                    generarSonido(SONIDO_ERROR);
+                                    JOptionPane.showMessageDialog(null, "Nombre del codigo repetido !!. Por favor, inserta un nombre codigo");    
                                 }
-                            }else{
+                            }else {
                                 generarSonido(SONIDO_ERROR);
-                                JOptionPane.showMessageDialog(null, "Nombre del codigo repetido !!. Por favor, inserta un nombre codigo");    
+                                JOptionPane.showMessageDialog(null, "Formato del codigo incorrecto !!. Inserta formato correcto. Ejemplo: A-0000");
                             }
-                        }else {
-                            generarSonido(SONIDO_ERROR);
-                            JOptionPane.showMessageDialog(null, "Formato del codigo incorrecto !!. Inserta formato correcto. Ejemplo: A-0000");
+                            
+                        } else {
+                            generarSonido(SONIDO_ERROR); // Si error, uso ternario (By Mariannnn)
+                            String msj1 = "Precio incorrecto !! Inserte un precio menor a 8 cifras.";
+                            String msj2 = "Cantidad incorrecta !! Inserte una cantidad a menor a 8 cifras.";
+                            String salida = (vista.txtPrecio.getText().length() > 8) ? msj1 : msj2;
+                            JOptionPane.showMessageDialog(null, salida);
                         }
+                        
                     }catch (SQLException ex) {
                         generarSonido(SONIDO_ERROR);
                         JOptionPane.showMessageDialog(null, "Hubo un problema: " + ex.getMessage());
@@ -312,9 +323,6 @@ public class Controlador implements ActionListener {
                         generarSonido(SONIDO_ERROR);
                         JOptionPane.showMessageDialog(null, "Hubo un problema con los campos numericos: " + ex.getMessage());
                     }
-                }else {
-                    generarSonido(SONIDO_ERROR);
-                    JOptionPane.showMessageDialog(null, "Hay campos obligatorios que estan vacios.");
                 }
                 
             // BOTON-ACTUALIZAR

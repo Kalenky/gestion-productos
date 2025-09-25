@@ -21,4 +21,6 @@ CREATE TABLE IF NOT EXISTS productos (
     fecha_actualizacion DATE NOT NULL
 );
 
+UPDATE usuarios SET contrasena = '123456Abc#' WHERE nombre LIKE 'marian';
+
 --INSERT INTO usuarios (nombre, contrasena, pregunta, respuesta, habilitado, rol, fecha_creacion, fecha_actualizacion) VALUES ('principal', '123456', '�Cual es tu color favorito?', 'azul', 1, 'admin', '2025-08-13', '2025-08-29');
